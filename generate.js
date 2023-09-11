@@ -37,13 +37,18 @@ class MatrixGenerator {
         return unvisited[Math.floor(Math.random() * unvisited.length)];
     }
     
+    async create(i, j){
+        await this.dfs([i,j]);
+        this.open=false;
+    }
     async dfs(curr){
         let i=curr[0], j=curr[1];
         this.visited[i][j]=true;
         let next = this.getUnvisitedNeighbor(curr);
         while(next && this.open) {
             this.getCurr(curr).style.background=activeColor;
-            await new Promise(resolve => setTimeout(resolve, this.speed));
+            if(this.speed>0)
+                await new Promise(resolve => setTimeout(resolve, this.speed));
             if(!this.open)  return;
             this.connect(curr, next);
             this.getCurr(curr).style.background="white";
@@ -80,24 +85,3 @@ class MatrixGenerator {
     }
 
 }
-
-let prev = {open:false};
-function reset(){
-    prev.open = false;
-    let m = parseInt(document.querySelector("#rowInput").value);
-    let n = parseInt(document.querySelector("#colInput").value);
-    let speed = parseInt(document.querySelector("#speedInput").value)
-    return new MatrixGenerator(m, n, speed);
-}
-
-function generate(){
-    let matrix = reset();
-    let start= [0, Math.floor(Math.random() * matrix.n)];
-    matrix.getCurr(start).style.borderTopColor="white";
-    matrix.dfs(start);
-    let last = [matrix.m-1, Math.floor(Math.random() * matrix.n)];
-    matrix.getCurr(last).style.borderBottomColor="white";    
-    prev = matrix
-}
-
-generate()
