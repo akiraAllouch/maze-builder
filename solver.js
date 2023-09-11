@@ -1,62 +1,52 @@
-
-class mazeSolver{
-    constructor(m, n, iend, jend, speed){
-        this.m = m;
-        this.n = n;
+class MazeSolver extends Maze{
+    constructor(iend, jend){
+        super();
+        this.running = false;
         this.iend = iend;
         this.jend = jend;
-        this.speed = speed;
+    }
+
+    async solve(i, j){
+        this.running = true;
+        await this.solveMaze(i, j);
+        this.running = false;
     }
 
     async solveMaze(i, j){
-        if(i==this.iend && j==this.jend) return true;
-        let current = this.getCurr(i, j);
-        if(current.textContent!="") return false
-        current.textContent=".";
-        if(await this.move(i, j, "l"))
+        let current = this.getCurr([i, j]);
+        if(current.style.background!="white") return false
+        if((i==this.iend && j==this.jend) || !this.running) 
             return true;
-        if(await this.move(i, j, "r"))
-            return true;
-        if(await this.move(i, j, "u"))
-            return true;
-        if(await this.move(i, j, "d"))
-            return true;
-        current.textContent="X";
+        current.style.background="#86f38682";
+        let potentialMoves = this.getAvailableMoves(i, j);
+        for(let move of potentialMoves){
+            if(this.speed > 0)
+                await new Promise(resolve => setTimeout(resolve, this.speed));
+            if(await this.solveMaze(move[0], move[1]))
+                return true;
+        }
+        current.style.background="#ff353538";
+        // current.textContent="X";
         return false;
     }
-    async move(i, j, type){ //l, r, u, d
-        let i1 = i, j1 = j;
-        let current = this.getCurr(i, j);
-        switch(type){
-            case "l":
-                if(j==0 || current.style.borderLeftColor=="black")
-                    return false;
-                j1--;
-                break;
-            case "r":
-                if(j==this.m-1 || current.style.borderRightColor=="black")
-                    return false;
-                j1++;
-                break;
-            case "u":
-                if(i==0 || current.style.borderTopColor=="black")
-                    return false;
-                i1--;
-                break;
-            case "d":
-                if(i==this.n-1 || current.style.borderBottomColor=="black")
-                    return false;
-                i1++;
-        }
-        if(this.speed > 0)
-            await new Promise(resolve => setTimeout(resolve, this.speed));
-        return await this.solveMaze(i1, j1);
-    }
 
-    getCurr(i, j)
-    {
-        return document.querySelector("#cell-"+i+"-"+j);
+    getAvailableMoves(i, j){
+        let moves = [];
+        let current = this.getCurr([i, j]);
+        if(j>0 && current.style.borderLeftColor!="black") //left
+            moves.push([i, j-1]);
+        if(j<this.m-1 && current.style.borderRightColor!="black") //right
+            moves.push([i, j+1]);
+        if(i>0 && current.style.borderTopColor!="black") //up
+            moves.push([i-1, j]);
+        if(i<this.n-1 && current.style.borderBottomColor!="black") //down
+            moves.push([i+1, j]);
+        //shuffle
+        for (let i = moves.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [moves[i], moves[j]] = [moves[j], moves[i]];
+        }
+        return moves;
     }
 
 }
-

@@ -1,31 +1,30 @@
 const px=1;
-const activeColor="#eb141466";
-class MatrixGenerator {
-    constructor(m, n, speed = 100){
-        this.speed = speed;
+const activeColor="#86f38682";
+class MatrixGenerator extends Maze {
+    constructor(){
+        super();
         this.open=true;
-        this.m = m;
-        this.n = n;
-        this.visited = Array.from({ length: m }, () => Array(n).fill(false));
+        this.visited = Array.from({ length: this.m }, () => Array(this.n).fill(false));
         let matrixEl = document.getElementById("matrix");
-        matrixEl.style.gridTemplateRows = "repeat("+m+", 1fr)";
-        matrixEl.style.gridTemplateColumns = "repeat("+n+", 1fr)";
+        matrixEl.style.gridTemplateRows = "repeat("+this.m+", 1fr)";
+        matrixEl.style.gridTemplateColumns = "repeat("+this.n+", 1fr)";
         matrixEl.innerHTML = "";
-        for(let i=0; i<m; i++){
-            for(let j=0; j<n; j++){
+        for(let i=0; i<this.m; i++){
+            for(let j=0; j<this.n; j++){
                 let cell = document.createElement("div");
                 cell.id="cell-"+i+"-"+j;
                 cell.style.borderLeft = px+"px solid black";
                 cell.style.borderRight = px+"px solid black";
                 cell.style.borderTop = px+"px solid black";
                 cell.style.borderBottom = px+"px solid black";
-                cell.style.minHeight="10px";
-                cell.style.minWidth="10px";
+                cell.style.minHeight="5px";
+                cell.style.minWidth="5px";
                 cell.style.textAlign="center";
                 matrixEl.appendChild(cell);
             }
         }
     }
+    
     getUnvisitedNeighbor(curr){
         let unvisited = [];
         let m = this.visited.length, n = this.visited[0].length;
@@ -51,15 +50,10 @@ class MatrixGenerator {
                 await new Promise(resolve => setTimeout(resolve, this.speed));
             if(!this.open)  return;
             this.connect(curr, next);
-            this.getCurr(curr).style.background="white";
+            this.getCurr(curr).style.background="transparent";
             await this.dfs(next)
             next = this.getUnvisitedNeighbor(curr);
         }
-    }
-    
-    getCurr(curr)
-    {
-        return document.querySelector("#cell-"+curr[0]+"-"+curr[1]);
     }
 
     connect(curr1,curr2){
@@ -67,20 +61,20 @@ class MatrixGenerator {
         let currEl1 = this.getCurr(curr1);
         let currEl2 = this.getCurr(curr2);
         if(curr1[0] < curr2[0]) {
-            currEl1.style.borderBottomColor = "white";
-            currEl2.style.borderTopColor = "white";  
+            currEl1.style.borderBottomColor = "transparent";
+            currEl2.style.borderTopColor = "transparent";  
         }
         else if(curr1[0] > curr2[0]) {
-            currEl1.style.borderTopColor = "white";
-            currEl2.style.borderBottomColor = "white";
+            currEl1.style.borderTopColor = "transparent";
+            currEl2.style.borderBottomColor = "transparent";
         }
         else if(curr1[1] < curr2[1]){
-            currEl1.style.borderRightColor = "white";
-            currEl2.style.borderLeftColor = "white";
+            currEl1.style.borderRightColor = "transparent";
+            currEl2.style.borderLeftColor = "transparent";
         }
         else if(curr1[1] > curr2[1]){
-            currEl1.style.borderLeftColor = "white";
-            currEl2.style.borderRightColor = "white";
+            currEl1.style.borderLeftColor = "transparent";
+            currEl2.style.borderRightColor = "transparent";
         }
     }
 
