@@ -13,10 +13,10 @@ class MatrixGenerator extends Maze {
             for(let j=0; j<this.n; j++){
                 let cell = document.createElement("div");
                 cell.id="cell-"+i+"-"+j;
-                cell.style.borderLeft = px+"px solid black";
-                cell.style.borderRight = px+"px solid black";
-                cell.style.borderTop = px+"px solid black";
-                cell.style.borderBottom = px+"px solid black";
+                cell.style.borderLeft = (j==0 ? 2*px : px)+"px solid black";
+                cell.style.borderRight = (j==this.m-1 ? 2*px : px)+"px solid black";
+                cell.style.borderTop = (i==0 ? 2*px : px)+"px solid black";
+                cell.style.borderBottom = (i==this.n-1 ? 2*px : px)+"px solid black";
                 cell.style.minHeight="5px";
                 cell.style.minWidth="5px";
                 cell.style.textAlign="center";
