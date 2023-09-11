@@ -36,11 +36,11 @@ class MazeSolver extends Maze{
         let current = this.getCurr([i, j]);
         if(j>0 && current.style.borderLeftColor!="black") //left
             moves.push([i, j-1]);
-        if(j<this.m-1 && current.style.borderRightColor!="black") //right
+        if(j<this.n-1 && current.style.borderRightColor!="black") //right
             moves.push([i, j+1]);
         if(i>0 && current.style.borderTopColor!="black") //up
             moves.push([i-1, j]);
-        if(i<this.n-1 && current.style.borderBottomColor!="black") //down
+        if(i<this.m-1 && current.style.borderBottomColor!="black") //down
             moves.push([i+1, j]);
         //shuffle
         for (let i = moves.length - 1; i > 0; i--) {
