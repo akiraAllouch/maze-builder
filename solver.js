@@ -15,9 +15,10 @@ class MazeSolver extends Maze{
     async solveMaze(i, j){
         let current = this.getCurr([i, j]);
         if(current.style.background!="white") return false
-        if((i==this.iend && j==this.jend) || !this.running) 
-            return true;
+        if(!this.running) return true;
         current.style.background="#86f38682";
+        if(i==this.iend && j==this.jend) 
+            return true;
         let potentialMoves = this.getAvailableMoves(i, j);
         for(let move of potentialMoves){
             if(this.speed > 0)
