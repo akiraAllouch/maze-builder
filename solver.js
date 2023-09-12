@@ -11,7 +11,7 @@ class MazeSolver extends Maze{
         await this.solveMaze(i, j);
         this.running = false;
     }
-
+    
     async solveMaze(i, j){
         let current = this.getCurr([i, j]);
         if(current.style.background!="white") return false

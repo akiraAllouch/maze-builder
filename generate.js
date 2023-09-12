@@ -17,6 +17,7 @@ class MatrixGenerator extends Maze {
                 cell.style.borderRight = (j==this.m-1 ? 2*px : px)+"px solid black";
                 cell.style.borderTop = (i==0 ? 2*px : px)+"px solid black";
                 cell.style.borderBottom = (i==this.n-1 ? 2*px : px)+"px solid black";
+                cell.style.overflow= "hidden";
                 cell.style.minHeight="5px";
                 cell.style.minWidth="5px";
                 cell.style.textAlign="center";
@@ -45,7 +46,7 @@ class MatrixGenerator extends Maze {
         this.visited[i][j]=true;
         let next = this.getUnvisitedNeighbor(curr);
         while(next && this.open) {
-            this.getCurr(curr).style.background=activeColor;
+            this.getCurr(curr).style.background =activeColor;
             if(this.speed>0)
                 await new Promise(resolve => setTimeout(resolve, this.speed));
             if(!this.open)  return;

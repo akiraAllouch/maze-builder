@@ -13,15 +13,18 @@
         }
 
         #matrix{
-            display: grid;
-            width: 100vw;
-            height: 100vh;
             padding: 10px;
+            position: absolute;
+            display: grid;
+            width: 60vw;
+            height: 100vh;
         }
         .form-container{
-            width: 55em;
+            width: 40vw;
             display: flex;
             height: 30em;
+            right: 0;
+            position: absolute;
         }
         form {
             margin: auto;
@@ -29,6 +32,11 @@
         }
         form > div {
             padding: 10px;
+        }
+        img {
+            width: 50px;
+            transition: width 2s;
+            transition-timing-function: cubic-bezier(0.1, 0.7, 1.0, 0.1);
         }
     </style>
     <body>
@@ -53,6 +61,7 @@
                     <div>
                         <button onclick="generate()" type="button" class="btn btn-light">Generate</button>
                         <button id="solveButton" onclick="solve()" class="btn btn-light" disabled="true" type="button">Solve</button>
+                        <button id="antButton" onclick="hive.add()" class="btn btn-light" disabled="true" type="button">Drop Ant</button>
                     </div>
                 </form>
             </div>
@@ -62,6 +71,7 @@
         <script src="maze.js"></script>
         <script src="generate.js"></script>
         <script src="solver.js"></script>
+        <script src="antsolver.js"></script>
         <script src="main.js"></script>
         <script>
             function enforceMinMax(el) {
